@@ -15,12 +15,49 @@ export function testPing(timeout: number = 1000): Bluebird<any> {
     }));
 }
 
+/**
+ * Attempts to find a book with the given ID.
+ * If successful, returns all information known about it.
+ * Otherwise, returns un undefined object.
+ * @param id The ID thanks to which find the requested book.
+ * @returns {Bluebird<Metadata>}
+ */
 export function findBookById(id: number | string): Bluebird<Metadata> {
-  return Bluebird.reject(new Error('Not implemented yet'));
+  return Bluebird
+    .resolve(client.search({
+      index: 'babel',
+      body: {
+        query: {
+          ids: {
+            values: [id]
+          }
+        }
+      }
+    }))
+    .then((res: any) => {
+      return res.hits.hits[0] ? res.hits.hits[0]._source : undefined;
+    });
 }
 
+/**
+ * Attempts to find a book witch match the given title.
+ * If successful, returns an array with all information about each
+ * book, or an empty array otherwise.
+ * @param title The piece of title to find.
+ * @returns {Bluebird<Metadata[]>}
+ */
 export function findBookByTitle(title: string): Bluebird<Metadata[]> {
-  return Bluebird.reject(new Error('Not implemented yet'));
+  return Bluebird
+    .resolve(client.search({
+      index: 'babel',
+      q: 'title:' + title
+    }))
+    .then((res: any) => {
+      return res.hits.hits;
+    })
+    .map((res: any) => {
+      return res._source;
+    });
 }
 
 /**

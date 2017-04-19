@@ -27,32 +27,63 @@ router.get('/test', (req: express.Request, res: express.Response) => {
       return res.status(200).json(response);
     })
     .catch((err: any) => {
-      response.elastic.status = 500;
+      response.elastic.status = 408;
       response.elastic.comment = 'the request timed out...';
       response.elastic.error = err;
       return res.status(200).json(response);
     });
 });
 
+/**
+ * GET /book/:id
+ *
+ * Tries to find information about a book with the given ID.
+ * The ID must match exactly.
+ * If successful, returns all known info with a 200 status code.
+ * Otherwise, returns a 404 not found status code alongside
+ * a small object telling what was the searched ID.
+ */
 router.get('/book/:id', (req: express.Request, res: express.Response) => {
   return services
     .findBookById(req.params['id'])
     .then((book: Metadata) => {
-      return res.status(200).json(book);
+      if(book) {
+        return res.status(200).json(book);
+      }
+      return res.status(404).json({
+        id: req.params['id'],
+        status: 'Not found'
+      });
     })
     .catch((err: Error) => {
-      return res.status(404).json(err);
+      return res.status(500).json(err);
     });
 });
 
+/**
+ * GET /book/title/:title
+ *
+ * Tries to find information about a book with the given title.
+ * At least one word must match in order to send back results.
+ * If successful, returns an array with all known info about
+ * each matched book with a 200 status code.
+ * Otherwise, returns a 404 not found status code alongside
+ * a small object telling what was the searched title.
+ */
 router.get('/book/title/:title', (req: express.Request, res: express.Response) => {
   return services
     .findBookByTitle(req.params['title'])
     .then((book: Metadata[]) => {
-      return res.status(200).json(book);
+      if(book && book.length > 0) {
+        return res.status(200).json(book);
+      }
+      return res.status(404).json({
+        title: req.params['title'],
+        status: 'Not found'
+      });
     })
     .catch((err: Error) => {
-      return res.status(404).json(err);
+      return res.status(500).json(err);
     });
 });
 
