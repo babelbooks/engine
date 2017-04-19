@@ -19,7 +19,7 @@ import * as path    from 'path';
 /**
  * Parse parameters from the elastic.ini file.
  */
-let options = ini.parse(fs.readFileSync(path.resolve(__dirname, './elastic.ini'), 'utf-8'));
+let options = ini.parse(fs.readFileSync(path.resolve(__dirname, './elastic.ini'), 'utf-8')).options;
 
 /**
  * The client used to access our elasticsearch server.
@@ -32,4 +32,31 @@ export const client = new elastic.Client({
   sniffInterval: options.sniffInterval
 });
 
+/**
+ * The main index where our data will be stored.
+ */
 export const indexName = options.indexName;
+
+/**
+ * Initialize index mapping.
+ */
+// client.indices.putMapping({
+//   index: indexName,
+//   type: 'book',
+//   body: {
+//     properties: {
+//       title: { type: 'text' },
+//       abstract: { type: 'text' },
+//       author: { type: 'text' },
+//       edition: { type: 'text' },
+//       majorForm: { type: 'text' },
+//       cover: { type: 'text' },
+//       genres: { type: 'text' },
+//       suggest: {
+//         type: 'completion',
+//         analyzer: 'simple',
+//         search_analyzer: 'simple'
+//       }
+//     }
+//   }
+// });
