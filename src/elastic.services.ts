@@ -38,6 +38,7 @@ export function findBookById(id: number | string): Bluebird<Metadata> {
     .then((res: any) => {
       if(res.hits.hits[0]) {
         res.hits.hits[0]._source.id = res.hits.hits[0]._id;
+        delete res.hits.hits[0]._source.suggest;
         return res.hits.hits[0]._source;
       }
       return undefined;
@@ -62,7 +63,38 @@ export function findBookByTitle(title: string): Bluebird<Metadata[]> {
     })
     .map((res: any) => {
       res._source.id = res._id;
+      delete res._source.suggest;
       return res._source;
+    });
+}
+
+/**
+ * Attempts to complete the given piece of text
+ * into some books' titles stored in our index.
+ * If successful, returns an array with all the matched titles.
+ * Otherwise, returns an empty array.
+ * @param piece The piece of text to complete.
+ * @returns {Bluebird<string[]>}
+ */
+export function autocomplete(piece: string): Bluebird<string[]> {
+  return Bluebird
+    .resolve(client.suggest({
+      index: indexName,
+      body: {
+        docsuggest: {
+          text: piece,
+          completion: {
+            field: 'suggest',
+            fuzzy: true
+          }
+        }
+      }
+    }))
+    .then((res: any) => {
+      return res.docsuggest[0] ? res.docsuggest[0].options : [];
+    })
+    .map((res: any) => {
+      return res._source.title;
     });
 }
 
@@ -77,11 +109,15 @@ export function findBookByTitle(title: string): Bluebird<Metadata[]> {
 export function addBook(book: Metadata): Bluebird<any> {
   let id = '' + book.id;
   delete book.id;
+  let obj: any = Object.assign(book);
+  obj.suggest = {
+    input: book.title.split(' ')
+  };
   return Bluebird.resolve(client.index({
     index: indexName,
     type: 'book',
     id: id,
-    body: book
+    body: obj
   }));
 }
 
@@ -137,6 +173,7 @@ export function search(query: string): Bluebird<Metadata[]> {
     })
     .map((res: any) => {
       res._source.id = res._id;
+      delete res._source.suggest;
       return res._source;
     });
 }

@@ -111,7 +111,34 @@ router.get('/book/search/:query', (req: express.Request, res: express.Response) 
       });
     })
     .catch((err: Error) => {
-      return res.status(404).json(err);
+      return res.status(500).json(err);
+    });
+});
+
+/**
+ * GET /book/autocomplete/:piece
+ *
+ * Tries to complete the given piece of text
+ * into some books' titles stored in our index.
+ * If successful, returns an array with all the matched titles
+ * alongside a status 200 code.
+ * Otherwise, returns a 4040 not found status code along with
+ * a small object telling what were the searched piece of text.
+ */
+router.get('/book/autocomplete/:piece', (req: express.Request, res: express.Response) => {
+  return services
+    .autocomplete(req.params['piece'])
+    .then((resp: string[]) => {
+      if(resp && resp.length > 0) {
+        return res.status(200).json(resp);
+      }
+      return res.status(404).json({
+        query: req.params['piece'],
+        status: 'Not found'
+      });
+    })
+    .catch((err: Error) => {
+      return res.status(500).json(err);
     });
 });
 
@@ -135,7 +162,9 @@ router.put('/book', (req: express.Request, res: express.Response) => {
       return res.status(201).json(result);
     })
     .catch((err: Error) => {
-      return res.status(400).json(err);
+      console.error('ERROR');
+      console.error(err);
+      return res.status(500).json(err);
     });
 });
 
