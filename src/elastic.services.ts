@@ -35,7 +35,11 @@ export function findBookById(id: number | string): Bluebird<Metadata> {
       }
     }))
     .then((res: any) => {
-      return res.hits.hits[0] ? res.hits.hits[0]._source : undefined;
+      if(res.hits.hits[0]) {
+        res.hits.hits[0]._source.id = res.hits.hits[0]._id;
+        return res.hits.hits[0]._source;
+      }
+      return undefined;
     });
 }
 
@@ -56,6 +60,7 @@ export function findBookByTitle(title: string): Bluebird<Metadata[]> {
       return res.hits.hits;
     })
     .map((res: any) => {
+      res._source.id = res._id;
       return res._source;
     });
 }
@@ -130,6 +135,7 @@ export function search(query: string): Bluebird<Metadata[]> {
       return res.hits.hits;
     })
     .map((res: any) => {
+      res._source.id = res._id;
       return res._source;
     });
 }
