@@ -67,14 +67,27 @@ router.get('/book/search/:query', (req: express.Request, res: express.Response) 
     });
 });
 
+/**
+ * PUT /book
+ * book: Metadata
+ *
+ * Adds the given book to the right index.
+ * f the books already exists, i.e. there is already
+ * a book with the same id as provided,
+ * the book is simply overridden.
+ * Returns a 201 created status code if successful,
+ * along with some associated information.
+ * Otherwise, returns a 400 bad request alongside
+ * an object describing the error.
+ */
 router.put('/book', (req: express.Request, res: express.Response) => {
   return services
-    .addBook(req.params['id'])
+    .addBook(req.body.book)
     .then((result: any) => {
       return res.status(201).json(result);
     })
     .catch((err: Error) => {
-      return res.status(404).json(err);
+      return res.status(400).json(err);
     });
 });
 

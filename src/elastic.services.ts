@@ -23,8 +23,23 @@ export function findBookByTitle(title: string): Bluebird<Metadata[]> {
   return Bluebird.reject(new Error('Not implemented yet'));
 }
 
+/**
+ * Adds the given book to the right index.
+ * If the books already exists, i.e. there is already
+ * a book with the same id as provided,
+ * the book is simply overridden.
+ * @param book The data to insert.
+ * @returns {Bluebird<any>}
+ */
 export function addBook(book: Metadata): Bluebird<any> {
-  return Bluebird.reject(new Error('Not implemented yet'));
+  let id = '' + book.id;
+  delete book.id;
+  return Bluebird.resolve(client.index({
+    index: 'babel',
+    type: 'book',
+    id: id,
+    body: book
+  }));
 }
 
 export function search(query: string): Bluebird<Metadata[]> {
