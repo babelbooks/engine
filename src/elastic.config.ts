@@ -11,6 +11,9 @@ import * as path    from 'path';
  * your index will have 5 primary shards and another 5 replica shards
  * (1 complete replica) for a total of 10 shards per index.
  * https://www.elastic.co/guide/en/elasticsearch/reference/current/_basic_concepts.html
+ *
+ * By default, results are returned sorted by relevance — with the most relevant docs first.
+ * https://www.elastic.co/guide/en/elasticsearch/guide/current/sorting.html
  */
 
 /**
