@@ -87,11 +87,28 @@ router.get('/book/title/:title', (req: express.Request, res: express.Response) =
     });
 });
 
+/**
+ * GET /book/search/:query
+ *
+ * Tries to find books that are matching the provided keywords.
+ * f successful, returns an array with all information
+ * about each matched book (sorted by highest relevance,
+ * and truncated to the default number of results),
+ * along with a 200 status code.
+ * Otherwise, returns a 404 not found status code alongside
+ * a small object telling what were the searched keywords.
+ */
 router.get('/book/search/:query', (req: express.Request, res: express.Response) => {
   return services
     .search(req.params['query'])
     .then((book: Metadata[]) => {
-      return res.status(200).json(book);
+      if(book && book.length > 0) {
+        return res.status(200).json(book);
+      }
+      return res.status(404).json({
+        query: req.params['query'],
+        status: 'Not found'
+      });
     })
     .catch((err: Error) => {
       return res.status(404).json(err);

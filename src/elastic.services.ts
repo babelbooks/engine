@@ -79,6 +79,57 @@ export function addBook(book: Metadata): Bluebird<any> {
   }));
 }
 
+/**
+ * Tries to find books that are matching the provided keywords.
+ * If successful, returns an array with all information
+ * about each matched book (sorted by highest relevance,
+ * and truncated to the default number of results).
+ * Otherwise, returns an empty array.
+ * @param query The keywords thanks to which perform the search.
+ * @returns {Bluebird<Metadata[]>}
+ *
+ * TODO: relevance can be widely enhanced (https://www.elastic.co/guide/en/elasticsearch/guide/current/search-in-depth.html)
+ * TODO: (applies for others) Add a custom limit and offset
+ */
 export function search(query: string): Bluebird<Metadata[]> {
-  return Bluebird.reject(new Error('Not implemented yet'));
+  let q = {
+    bool: {
+      should: [
+        {
+          match: {
+            title: {
+              query: query,
+              boost: 2.0
+            }
+          }
+        },
+        {
+          match: {
+            author: {
+              query: query,
+              boost: 2.0
+            }
+          }
+        },
+        {
+          match: {
+            abstract: query
+          }
+        }
+      ]
+    }
+  };
+  return Bluebird
+    .resolve(client.search({
+      index: 'babel',
+      body: {
+        query: q
+      }
+    }))
+    .then((res: any) => {
+      return res.hits.hits;
+    })
+    .map((res: any) => {
+      return res._source;
+    });
 }
