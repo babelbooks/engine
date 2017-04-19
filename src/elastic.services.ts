@@ -1,5 +1,6 @@
 import * as Bluebird  from 'bluebird';
 import { client }     from './elastic.config';
+import { indexName }  from './elastic.config';
 import { Metadata }   from './metadata.interface';
 
 /**
@@ -25,7 +26,7 @@ export function testPing(timeout: number = 1000): Bluebird<any> {
 export function findBookById(id: number | string): Bluebird<Metadata> {
   return Bluebird
     .resolve(client.search({
-      index: 'babel',
+      index: indexName,
       body: {
         query: {
           ids: {
@@ -53,7 +54,7 @@ export function findBookById(id: number | string): Bluebird<Metadata> {
 export function findBookByTitle(title: string): Bluebird<Metadata[]> {
   return Bluebird
     .resolve(client.search({
-      index: 'babel',
+      index: indexName,
       q: 'title:' + title
     }))
     .then((res: any) => {
@@ -77,7 +78,7 @@ export function addBook(book: Metadata): Bluebird<any> {
   let id = '' + book.id;
   delete book.id;
   return Bluebird.resolve(client.index({
-    index: 'babel',
+    index: indexName,
     type: 'book',
     id: id,
     body: book
@@ -126,7 +127,7 @@ export function search(query: string): Bluebird<Metadata[]> {
   };
   return Bluebird
     .resolve(client.search({
-      index: 'babel',
+      index: indexName,
       body: {
         query: q
       }

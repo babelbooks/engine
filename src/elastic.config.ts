@@ -31,3 +31,5 @@ export const client = new elastic.Client({
   sniffOnStart: options.sniffOnStart,
   sniffInterval: options.sniffInterval
 });
+
+export const indexName = options.indexName;
