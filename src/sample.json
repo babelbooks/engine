@@ -1,0 +1,34 @@
+[
+  {
+    "id": 98000000000001,
+    "title" : "Lysey's story",
+    "author" : "stephen king",
+    "abstract" : "awesome",
+    "genres" : [
+      "horror",
+      "fantasy"
+    ],
+    "majorForm" : "novel"
+  },
+  {
+    "id": 98000000000002,
+    "title" : "Cujo",
+    "author" : "stephen king",
+    "abstract" : "awesome dog is awesomely scary",
+    "genres" : [
+      "horror",
+      "fantasy"
+    ],
+    "majorForm" : "novel"
+  },
+  {
+    "title" : "At the Mountains of Madness",
+    "author" : "HP Lovecraft",
+    "abstract" : "damn son antarctica is white and scary",
+    "genres" : [
+      "horror",
+      "sci-fi"
+    ],
+    "majorForm" : "novel"
+  }
+]
