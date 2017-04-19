@@ -22,6 +22,7 @@
     "majorForm" : "novel"
   },
   {
+    "id": 98000000000003,
     "title" : "At the Mountains of Madness",
     "author" : "HP Lovecraft",
     "abstract" : "damn son antarctica is white and scary",
@@ -30,5 +31,15 @@
       "sci-fi"
     ],
     "majorForm" : "novel"
+  },
+  {
+    "id": 98000000000004,
+    "title": "The Magic Mountain",
+    "author": "Thomas mann",
+    "abstract": "some german story",
+    "genres": [
+      "culture",
+      "education"],
+    "majorForm": "novel"
   }
 ]
