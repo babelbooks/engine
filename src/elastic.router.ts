@@ -1,6 +1,5 @@
 import * as express   from 'express';
-import * as Bluebird  from 'bluebird';
-import { client }     from './elastic.config';
+import * as services  from './elastic.services';
 
 let router = express.Router();
 
@@ -21,10 +20,8 @@ router.get('/test', (req: express.Request, res: express.Response) => {
       comment: 'it\'s working too!'
     }
   };
-  return Bluebird
-    .resolve(client.ping({
-      requestTimeout: 1000
-    }))
+  return services
+    .testPing()
     .then(() => {
       return res.status(200).json(response);
     })
