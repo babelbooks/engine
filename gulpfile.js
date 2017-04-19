@@ -15,11 +15,17 @@ const srcFolder   = 'src';
 /**
  * Tasks
  */
-gulp.task('build', () => {
+gulp.task('build', ['build:config'], () => {
   return gulp
     .src([srcFolder + '/**/*.ts', 'node_modules/@types/**/*.ts', srcFolder + '/custom-typings/**/*.ts'])
     .pipe(gsm.init())
     .pipe(gts(tsConfig.compilerOptions))
+    .pipe(gulp.dest(distFolder));
+});
+
+gulp.task('build:config', () => {
+  return gulp
+    .src([srcFolder + '/**/*.ini'])
     .pipe(gulp.dest(distFolder));
 });
 

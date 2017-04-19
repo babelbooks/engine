@@ -1,11 +1,6 @@
-import * as elastic   from 'elasticsearch';
 import * as express   from 'express';
 import * as Bluebird  from 'bluebird';
-
-let client = new elastic.Client({
-  host: 'localhost:9200',
-  log: 'warning'
-});
+import { client }     from './elastic.config';
 
 let router = express.Router();
 
