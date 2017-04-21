@@ -1,5 +1,6 @@
 import * as express     from 'express';
 import * as bodyparser  from 'body-parser';
+import * as morgan      from 'morgan';
 
 import { default as elasticRouter } from './elastic.router';
 
@@ -7,6 +8,7 @@ const app = express();
 
 app.set('port', process.env.BB_ENGINE_PORT || 3002);
 
+app.use(morgan('dev'));
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({
   extended: true
