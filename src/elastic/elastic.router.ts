@@ -1,6 +1,6 @@
 import * as express   from 'express';
 import * as services  from './elastic.services';
-import { Metadata }   from './metadata.interface';
+import { Metadata }   from '../lib/metadata.interface';
 
 let router = express.Router();
 

@@ -1,7 +1,7 @@
 import * as Bluebird  from 'bluebird';
 import { client }     from './elastic.config';
 import { indexName }  from './elastic.config';
-import { Metadata }   from './metadata.interface';
+import { Metadata }   from '../lib/metadata.interface';
 
 /**
  * A ping function to check if the server is correctly running

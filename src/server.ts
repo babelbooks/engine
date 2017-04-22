@@ -3,7 +3,7 @@ import * as bodyparser  from 'body-parser';
 import * as morgan      from 'morgan';
 import * as cors        from 'cors';
 
-import { default as elasticRouter } from './elastic.router';
+import { default as elasticRouter } from './elastic/elastic.router';
 
 /**
  * Create server app.
