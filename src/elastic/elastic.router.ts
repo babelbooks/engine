@@ -2,7 +2,7 @@ import * as express   from 'express';
 import * as services  from './elastic.services';
 import { Metadata }   from '../lib/metadata.interface';
 
-let router = express.Router();
+export let router = express.Router();
 
 /**
  * GET /test
@@ -167,5 +167,3 @@ router.put('/book', (req: express.Request, res: express.Response) => {
       return res.status(500).json(err);
     });
 });
-
-export default router;
