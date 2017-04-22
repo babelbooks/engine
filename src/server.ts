@@ -4,6 +4,7 @@ import * as morgan      from 'morgan';
 import * as cors        from 'cors';
 
 import { default as elasticRouter } from './elastic/elastic.router';
+import * as isbn from './isbn/isbn.router';
 
 /**
  * Create server app.
@@ -33,6 +34,7 @@ app.use(bodyparser.urlencoded({
 
 // Mount sub-routers
 app.use('/', elasticRouter);
+app.use('/isbn', isbn.router);
 
 /**
  * Run the server.
