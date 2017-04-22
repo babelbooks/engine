@@ -128,12 +128,13 @@ export function addBook(book: Metadata): Bluebird<any> {
  * and truncated to the default number of results).
  * Otherwise, returns an empty array.
  * @param query The keywords thanks to which perform the search.
+ * @param limit The maximum number of books to retrieve. Default to 10.
+ * @param offset The offset from which retrieve books. Default to 0.
  * @returns {Bluebird<Metadata[]>}
  *
  * TODO: relevance can be widely enhanced (https://www.elastic.co/guide/en/elasticsearch/guide/current/search-in-depth.html)
- * TODO: (applies for others) Add a custom limit and offset
  */
-export function search(query: string): Bluebird<Metadata[]> {
+export function search(query: string, limit: number = 10, offset: number = 0): Bluebird<Metadata[]> {
   let q = {
     bool: {
       should: [
@@ -165,7 +166,9 @@ export function search(query: string): Bluebird<Metadata[]> {
     .resolve(client.search({
       index: indexName,
       body: {
-        query: q
+        query: q,
+        from: offset,
+        size: limit
       }
     }))
     .then((res: any) => {
