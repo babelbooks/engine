@@ -5,6 +5,22 @@ import { Metadata }   from '../lib/metadata.interface';
 export let router = express.Router();
 
 /**
+ * GET /test
+ *
+ * To test if the isbn router is working.
+ * Returns a 200 status code and a small json object if working.
+ */
+router.get('/test', (req: express.Request, res: express.Response) => {
+  return res
+    .status(200)
+    .json({
+      endpoint: req.originalUrl,
+      status: 200,
+      comment: 'it\'s working!'
+    });
+});
+
+/**
  * GET /:isbn
  *
  * Gather all metadata available from

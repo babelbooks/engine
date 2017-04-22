@@ -32,8 +32,15 @@ app.use(bodyparser.urlencoded({
   extended: true
 }));
 
+// Add a test path
+app.get('/test', (req: any, res: any) => res.status(200).json({
+  path: req.originalUrl,
+  status: 200,
+  comment: 'it\'s working!'
+}));
+
 // Mount sub-routers
-app.use('/', elastic.router);
+app.use('/elastic', elastic.router);
 app.use('/isbn', isbn.router);
 
 /**
