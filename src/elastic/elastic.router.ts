@@ -122,7 +122,7 @@ router.get('/book/search/:query', (req: express.Request, res: express.Response) 
  * into some books' titles stored in our index.
  * If successful, returns an array with all the matched titles
  * alongside a status 200 code.
- * Otherwise, returns a 4040 not found status code along with
+ * Otherwise, returns a 404 not found status code along with
  * a small object telling what were the searched piece of text.
  */
 router.get('/book/autocomplete/:piece', (req: express.Request, res: express.Response) => {
