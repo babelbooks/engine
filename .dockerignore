@@ -1,0 +1,11 @@
+# Node related
+node_modules/
+npm-debug.log
+
+# Dist folder
+dist/
+
+# Other
+.git/
+.idea/
+examples/
