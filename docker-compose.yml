@@ -19,19 +19,16 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - /usr/share/elasticsearch/data
     ports:
       - 9200:9200
-
+      - 9300:9300
+      
   engine:
     build: .
     ports:
       - "3002:3002"
     environment:
       - BB_ELASTIC_HOST=babelindex:9200
-    links:
+    external_links:
       - babelindex:babelindex
-
-volumes:
-  esdata1:
-    driver: local
